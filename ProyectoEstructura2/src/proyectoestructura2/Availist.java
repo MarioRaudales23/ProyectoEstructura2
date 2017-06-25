@@ -14,12 +14,12 @@ import java.util.LinkedList;
 public class Availist {
     private LinkedList availist;
     private static int header;
-    private static final int headerSize = Integer.BYTES;
+    private final int headerSize = Integer.BYTES;
 
     public Availist() {
     }
 
-    public Availist(int NuevoRRn) {
+    public Availist(LinkedList availist) {
         this.availist = availist;
     }
 
@@ -28,7 +28,7 @@ public class Availist {
         return borrado;
     }
 
-    public boolean setAvailist(int NuevoRRn) {
+    public boolean AddAvail(int NuevoRRn) {
         this.availist.add(NuevoRRn);
         return true;
     }
@@ -41,5 +41,16 @@ public class Availist {
         Availist.header = header;
     }
     
+    public int headerSize(){
+        return headerSize;
+    }
+
+    public LinkedList getAvailist() {
+        return availist;
+    }
+
+    public int getHeaderSize() {
+        return headerSize;
+    }
     
 }
