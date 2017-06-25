@@ -8,6 +8,7 @@ package proyectoestructura2;
 import java.awt.Image;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -20,6 +21,7 @@ public class Main extends javax.swing.JFrame {
      */
     public Main() {
         initComponents();
+        archivo = new TDA_Archivo();
     }
 
     /**
@@ -127,6 +129,11 @@ public class Main extends javax.swing.JFrame {
         jb_agregar.setBackground(new java.awt.Color(36, 113, 153));
         jb_agregar.setForeground(new java.awt.Color(99, 143, 201));
         jb_agregar.setText("Agregar");
+        jb_agregar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jb_agregarActionPerformed(evt);
+            }
+        });
 
         jLabel6.setFont(new java.awt.Font("Ubuntu", 1, 36)); // NOI18N
         jLabel6.setText("Agregar");
@@ -399,8 +406,18 @@ public class Main extends javax.swing.JFrame {
 
         jb_modificar.setText("Modificar");
         jb_modificar.setEnabled(false);
+        jb_modificar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jb_modificarActionPerformed(evt);
+            }
+        });
 
         jb_ModiBuscar.setText("Buscar");
+        jb_ModiBuscar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jb_ModiBuscarActionPerformed(evt);
+            }
+        });
 
         jLabel18.setFont(new java.awt.Font("Ubuntu", 1, 36)); // NOI18N
         jLabel18.setText("Modificar");
@@ -488,6 +505,11 @@ public class Main extends javax.swing.JFrame {
 
         jb_borrar.setFont(new java.awt.Font("Ubuntu", 1, 24)); // NOI18N
         jb_borrar.setText("Borrar");
+        jb_borrar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jb_borrarActionPerformed(evt);
+            }
+        });
 
         jLabel20.setFont(new java.awt.Font("Ubuntu", 1, 36)); // NOI18N
         jLabel20.setText("Borrar");
@@ -558,7 +580,13 @@ public class Main extends javax.swing.JFrame {
     }//GEN-LAST:event_JFT_salarioBuscarActionPerformed
 
     private void jb_BuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jb_BuscarActionPerformed
-        // TODO add your handling code here:
+        int id = Integer.parseInt(JFT_IDBorrar.getText());
+        if (archivo.Buscar(id)!= null) {
+            Persona buscada = archivo.Buscar(id);
+            JT_NombreBuscar.setText(buscada.getNombre());
+            JFT_NacimientoBuscar.setText(buscada.getFechaNacimiento());
+            JFT_salarioBuscar.setText(Float.toString(buscada.getSalario()));
+        }
     }//GEN-LAST:event_jb_BuscarActionPerformed
 
     private void JT_NombreModificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JT_NombreModificarActionPerformed
@@ -568,6 +596,54 @@ public class Main extends javax.swing.JFrame {
     private void JFT_salarioModificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JFT_salarioModificarActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_JFT_salarioModificarActionPerformed
+
+    private void jb_agregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jb_agregarActionPerformed
+        String nombre = JT_Nombre.getText();
+        int id = Integer.parseInt(JFT_ID.getText());
+        String Fecha = JFT_Nacimiento.getText();
+        float salario = Float.parseFloat(JFT_salario.getText());
+        if (nombre.length() > 40) {
+            JOptionPane.showMessageDialog(this, "El nombre es demasiado largo");
+        } else if (archivo.Buscar(id) != null) {
+            JOptionPane.showMessageDialog(this, "La persona ya existe");
+        } else {
+            Persona neo = new Persona(id, nombre, Fecha, salario);
+            if (archivo.Insertar(neo)) {
+                JOptionPane.showMessageDialog(this, "Se agrego con exito");
+            }else{
+                JOptionPane.showMessageDialog(this, "Hubo un error");
+            }
+        }
+    }//GEN-LAST:event_jb_agregarActionPerformed
+
+    private void jb_ModiBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jb_ModiBuscarActionPerformed
+        int id = Integer.parseInt(JFT_IDModificar.getText());
+        if (archivo.Buscar(id)!= null) {
+            Persona buscada = archivo.Buscar(id);
+            JT_NombreModificar.setText(buscada.getNombre());
+            JFT_NacimientoModificar.setText(buscada.getFechaNacimiento());
+            JFT_salarioModificar.setText(Float.toString(buscada.getSalario()));
+            JT_Nombre.setEnabled(true);
+            JFT_NacimientoModificar.setEnabled(true);
+            JFT_salarioModificar.setEnabled(true);
+            jb_modificar.setEnabled(true);
+        }
+    }//GEN-LAST:event_jb_ModiBuscarActionPerformed
+
+    private void jb_modificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jb_modificarActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jb_modificarActionPerformed
+
+    private void jb_borrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jb_borrarActionPerformed
+        int id = Integer.parseInt(JFT_IDBorrar.getText());
+        if (archivo.Buscar(id) != null) {
+            if (archivo.Borrar(id)) {
+                JOptionPane.showMessageDialog(this, "Registro borrado con exito");
+            }else{
+                JOptionPane.showMessageDialog(this, "No se logro borrar");
+            }
+        }
+    }//GEN-LAST:event_jb_borrarActionPerformed
 
     /**
      * @param args the command line arguments
@@ -655,4 +731,5 @@ public class Main extends javax.swing.JFrame {
     private javax.swing.JButton jb_paginaatras;
     private javax.swing.JTable jt_listar;
     // End of variables declaration//GEN-END:variables
+    TDA_Archivo archivo;
 }
