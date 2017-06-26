@@ -5,17 +5,19 @@
  */
 package proyectoestructura2;
 
+import java.io.Serializable;
+
 /**
  *
  * @author luigy
  */
-public class Pagina {
+public class Pagina implements Serializable{
 
     private Nodo[] nodos;
     private Pagina padre;
 
     public Pagina() {
-        nodos = new Nodo[4];
+        nodos = new Nodo[512];
 
     }
 

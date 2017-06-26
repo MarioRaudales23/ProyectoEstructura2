@@ -23,6 +23,8 @@ public class Main extends javax.swing.JFrame {
     public Main() {
         initComponents();
         archivo = new TDA_Archivo();
+        //archivo.cargar();
+        archivo.cargarArbol();
     }
 
     /**
@@ -50,8 +52,6 @@ public class Main extends javax.swing.JFrame {
         jPanel7 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jt_listar = new javax.swing.JTable();
-        jb_paginaatras = new javax.swing.JButton();
-        jb_paginaadelante = new javax.swing.JButton();
         jLabel21 = new javax.swing.JLabel();
         jPanel3 = new javax.swing.JPanel();
         jLabel7 = new javax.swing.JLabel();
@@ -86,6 +86,11 @@ public class Main extends javax.swing.JFrame {
         jLabel22 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosing(java.awt.event.WindowEvent evt) {
+                formWindowClosing(evt);
+            }
+        });
 
         jTabbedPane1.setBackground(new java.awt.Color(26, 89, 115));
         jTabbedPane1.setForeground(new java.awt.Color(255, 155, 0));
@@ -136,9 +141,10 @@ public class Main extends javax.swing.JFrame {
             }
         });
 
-        JFT_ID.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(java.text.NumberFormat.getIntegerInstance())));
+        JFT_ID.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("#0"))));
 
-        jb_agregar.setBackground(new java.awt.Color(2, 245, 233));
+        jb_agregar.setBackground(new java.awt.Color(34, 104, 100));
+        jb_agregar.setFont(new java.awt.Font("Ubuntu", 1, 18)); // NOI18N
         jb_agregar.setForeground(new java.awt.Color(254, 254, 254));
         jb_agregar.setText("Agregar");
         jb_agregar.addActionListener(new java.awt.event.ActionListener() {
@@ -172,7 +178,7 @@ public class Main extends javax.swing.JFrame {
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(JFT_Nacimiento)
                                     .addComponent(JFT_salario, javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(JFT_ID, javax.swing.GroupLayout.DEFAULT_SIZE, 254, Short.MAX_VALUE)
+                                    .addComponent(JFT_ID, javax.swing.GroupLayout.DEFAULT_SIZE, 229, Short.MAX_VALUE)
                                     .addComponent(JT_Nombre, javax.swing.GroupLayout.Alignment.TRAILING)))
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addComponent(jb_agregar, javax.swing.GroupLayout.PREFERRED_SIZE, 205, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -186,7 +192,7 @@ public class Main extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 49, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 32, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -234,20 +240,6 @@ public class Main extends javax.swing.JFrame {
         });
         jScrollPane1.setViewportView(jt_listar);
 
-        jb_paginaatras.setText("Pagina Atras");
-        jb_paginaatras.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jb_paginaatrasActionPerformed(evt);
-            }
-        });
-
-        jb_paginaadelante.setText("Pagina Adelante");
-        jb_paginaadelante.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jb_paginaadelanteActionPerformed(evt);
-            }
-        });
-
         jLabel21.setFont(new java.awt.Font("Ubuntu", 1, 36)); // NOI18N
         jLabel21.setText("Listar");
 
@@ -258,13 +250,11 @@ public class Main extends javax.swing.JFrame {
             .addGroup(jPanel7Layout.createSequentialGroup()
                 .addGap(46, 46, 46)
                 .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel21)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 647, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(jPanel7Layout.createSequentialGroup()
-                        .addComponent(jb_paginaatras)
-                        .addGap(138, 138, 138)
-                        .addComponent(jb_paginaadelante)))
-                .addContainerGap(119, Short.MAX_VALUE))
+                        .addComponent(jLabel21)
+                        .addGap(0, 630, Short.MAX_VALUE))
+                    .addComponent(jScrollPane1))
+                .addContainerGap())
         );
         jPanel7Layout.setVerticalGroup(
             jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -272,11 +262,7 @@ public class Main extends javax.swing.JFrame {
                 .addComponent(jLabel21)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jb_paginaatras)
-                    .addComponent(jb_paginaadelante))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(48, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("Listar", jPanel7);
@@ -316,7 +302,7 @@ public class Main extends javax.swing.JFrame {
             }
         });
 
-        JFT_IDBuscar.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(java.text.NumberFormat.getIntegerInstance())));
+        JFT_IDBuscar.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("#0"))));
 
         jLabel11.setFont(new java.awt.Font("Ubuntu", 0, 24)); // NOI18N
         jLabel11.setText("ID");
@@ -324,7 +310,9 @@ public class Main extends javax.swing.JFrame {
         jLabel12.setFont(new java.awt.Font("Ubuntu", 1, 36)); // NOI18N
         jLabel12.setText("Buscar");
 
-        jb_Buscar.setBackground(new java.awt.Color(70, 100, 205));
+        jb_Buscar.setBackground(new java.awt.Color(34, 104, 100));
+        jb_Buscar.setFont(new java.awt.Font("Ubuntu", 1, 18)); // NOI18N
+        jb_Buscar.setForeground(new java.awt.Color(254, 254, 254));
         jb_Buscar.setText("Buscar");
         jb_Buscar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -348,7 +336,7 @@ public class Main extends javax.swing.JFrame {
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(JFT_NacimientoBuscar)
                     .addComponent(JFT_salarioBuscar, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(JFT_IDBuscar, javax.swing.GroupLayout.DEFAULT_SIZE, 204, Short.MAX_VALUE)
+                    .addComponent(JFT_IDBuscar, javax.swing.GroupLayout.DEFAULT_SIZE, 179, Short.MAX_VALUE)
                     .addComponent(JT_NombreBuscar, javax.swing.GroupLayout.Alignment.TRAILING))
                 .addGap(38, 38, 38)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -381,7 +369,7 @@ public class Main extends javax.swing.JFrame {
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(JFT_salarioBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel10))
-                .addContainerGap(171, Short.MAX_VALUE))
+                .addContainerGap(154, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("Buscar", jPanel3);
@@ -424,8 +412,11 @@ public class Main extends javax.swing.JFrame {
             }
         });
 
-        JFT_IDModificar.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(java.text.NumberFormat.getIntegerInstance())));
+        JFT_IDModificar.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("#0"))));
 
+        jb_modificar.setBackground(new java.awt.Color(34, 104, 100));
+        jb_modificar.setFont(new java.awt.Font("Ubuntu", 1, 18)); // NOI18N
+        jb_modificar.setForeground(new java.awt.Color(254, 254, 254));
         jb_modificar.setText("Modificar");
         jb_modificar.setEnabled(false);
         jb_modificar.addActionListener(new java.awt.event.ActionListener() {
@@ -434,6 +425,9 @@ public class Main extends javax.swing.JFrame {
             }
         });
 
+        jb_ModiBuscar.setBackground(new java.awt.Color(34, 104, 100));
+        jb_ModiBuscar.setFont(new java.awt.Font("Ubuntu", 1, 18)); // NOI18N
+        jb_ModiBuscar.setForeground(new java.awt.Color(254, 254, 254));
         jb_ModiBuscar.setText("Buscar");
         jb_ModiBuscar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -463,7 +457,7 @@ public class Main extends javax.swing.JFrame {
                                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(JFT_NacimientoModificar)
                                     .addComponent(JFT_salarioModificar, javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(JFT_IDModificar, javax.swing.GroupLayout.DEFAULT_SIZE, 204, Short.MAX_VALUE)
+                                    .addComponent(JFT_IDModificar, javax.swing.GroupLayout.DEFAULT_SIZE, 179, Short.MAX_VALUE)
                                     .addComponent(JT_NombreModificar, javax.swing.GroupLayout.Alignment.TRAILING)))
                             .addGroup(jPanel4Layout.createSequentialGroup()
                                 .addComponent(jb_modificar, javax.swing.GroupLayout.PREFERRED_SIZE, 194, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -486,7 +480,7 @@ public class Main extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel18, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 58, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 41, Short.MAX_VALUE)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
                         .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -519,9 +513,11 @@ public class Main extends javax.swing.JFrame {
         jLabel19.setFont(new java.awt.Font("Ubuntu", 0, 24)); // NOI18N
         jLabel19.setText("ID");
 
-        JFT_IDBorrar.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(java.text.NumberFormat.getIntegerInstance())));
+        JFT_IDBorrar.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("#0"))));
 
+        jb_borrar.setBackground(new java.awt.Color(34, 104, 100));
         jb_borrar.setFont(new java.awt.Font("Ubuntu", 1, 24)); // NOI18N
+        jb_borrar.setForeground(new java.awt.Color(254, 254, 254));
         jb_borrar.setText("Borrar");
         jb_borrar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -570,7 +566,7 @@ public class Main extends javax.swing.JFrame {
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jb_borrar, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel22))
-                .addContainerGap(44, Short.MAX_VALUE))
+                .addContainerGap(27, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("Borrar", jPanel5);
@@ -579,7 +575,9 @@ public class Main extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jTabbedPane1)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 898, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -607,7 +605,7 @@ public class Main extends javax.swing.JFrame {
 
     private void jb_BuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jb_BuscarActionPerformed
         int id = Integer.parseInt(JFT_IDBuscar.getText());
-        if (archivo.Buscar(id) != null) {
+        if (archivo.getArbol().getRaiz().getNodos()[0] != null && archivo.Buscar(id) != null) {
             Persona buscada = archivo.Buscar(id);
             JT_NombreBuscar.setText(buscada.getNombre());
             JFT_NacimientoBuscar.setText(buscada.getFechaNacimiento());
@@ -716,29 +714,38 @@ public class Main extends javax.swing.JFrame {
             archivo.listar((DefaultTableModel) this.jt_listar.getModel(), 0);
             actual = 0;
         }
+        if (jTabbedPane1.getSelectedIndex() == 0) {
+            JFT_ID.setText("");
+            JT_Nombre.setText("");
+            JFT_Nacimiento.setText("");
+            JFT_salario.setText("");
+        }
+        if (jTabbedPane1.getSelectedIndex() == 2) {
+            JFT_IDBuscar.setText("");
+            JT_NombreBuscar.setText("");
+            JFT_NacimientoBuscar.setText("");
+            JFT_salarioBuscar.setText("");
+        }
+        if (jTabbedPane1.getSelectedIndex() == 3) {
+            JFT_IDModificar.setText("");
+            JT_NombreModificar.setText("");
+            JFT_NacimientoModificar.setText("");
+            JFT_salarioModificar.setText("");
+            JT_NombreModificar.setEnabled(false);
+            JFT_NacimientoModificar.setEnabled(false);
+            JFT_salarioModificar.setEnabled(false);
+            jb_modificar.setEnabled(false);
+        }
+        if (jTabbedPane1.getSelectedIndex() == 4) {
+            JFT_IDBorrar.setText("");
+        }
+        
 
     }//GEN-LAST:event_jTabbedPane1StateChanged
 
-    private void jb_paginaadelanteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jb_paginaadelanteActionPerformed
-        archivo.listar((DefaultTableModel) this.jt_listar.getModel(), siguiente);
-        anterior = actual;
-        actual = siguiente;
-        siguiente = actual + 1;
-    }//GEN-LAST:event_jb_paginaadelanteActionPerformed
-
-    private void jb_paginaatrasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jb_paginaatrasActionPerformed
-        if (anterior > 0) {
-            archivo.listar((DefaultTableModel) this.jt_listar.getModel(), anterior);
-            actual = anterior;
-            anterior = actual - 1;
-            siguiente = actual + 1;
-        } else if (anterior == 0) {
-            archivo.listar((DefaultTableModel) this.jt_listar.getModel(), 0);
-            actual = 0;
-            anterior = 0;
-            siguiente = 1;
-        }
-    }//GEN-LAST:event_jb_paginaatrasActionPerformed
+    private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
+        archivo.guardarArbol();
+    }//GEN-LAST:event_formWindowClosing
 
     /**
      * @param args the command line arguments
@@ -823,8 +830,6 @@ public class Main extends javax.swing.JFrame {
     private javax.swing.JButton jb_agregar;
     private javax.swing.JButton jb_borrar;
     private javax.swing.JButton jb_modificar;
-    private javax.swing.JButton jb_paginaadelante;
-    private javax.swing.JButton jb_paginaatras;
     private javax.swing.JTable jt_listar;
     // End of variables declaration//GEN-END:variables
     TDA_Archivo archivo;

@@ -5,11 +5,13 @@
  */
 package proyectoestructura2;
 
+import java.io.Serializable;
+
 /**
  *
  * @author luigy
  */
-public class Nodo {
+public class Nodo implements Serializable{
     private long key;
     private int pos;
     private Pagina izq;
