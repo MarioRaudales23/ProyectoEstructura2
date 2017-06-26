@@ -12,10 +12,11 @@ import java.util.ArrayList;
  *
  * @author luigy
  */
-public class ArbolB implements Serializable{
-    private static long SerialVersionUID=246547634;
+public class ArbolB implements Serializable {
+
+    private static long SerialVersionUID = 246547634;
     private Pagina raiz;
-    
+
     public ArbolB() {
         raiz = new Pagina();
     }
@@ -31,6 +32,7 @@ public class ArbolB implements Serializable{
     public void setRaiz(Pagina raiz) {
         this.raiz = raiz;
     }
+
     public void insertar(Nodo nuevo) {
         if (raiz.getNodos()[0] == null) {
             raiz.getNodos()[0] = nuevo;
@@ -45,7 +47,7 @@ public class ArbolB implements Serializable{
         obtenerNodoListar(salida, recorrerListar(new Nodo(0, 0), raiz, false), 0, new Nodo());
 
     }
-    
+
     public void obtenerNodoListar(ArrayList<Nodo> salida, Pagina pag, int actual, Nodo anterior) {
         for (Nodo nodo : salida) {
             System.out.print(nodo.getKey() + ",");

@@ -162,7 +162,6 @@ public class TDA_Archivo {
                         return true;
                     }
                 }
-
             } catch (IOException ex) {
                 Logger.getLogger(TDA_Archivo.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -299,21 +298,21 @@ public class TDA_Archivo {
                     String fecha1;
                     String fecha2;
                     String fecha3;
-                    fecha1 =fecha[2];
-                    if (fecha[0].length()==1) {                        
-                      fecha2 = "0"+ fecha[0];
-                    }else{
+                    fecha1 = fecha[2];
+                    if (fecha[0].length() == 1) {
+                        fecha2 = "0" + fecha[0];
+                    } else {
                         fecha2 = fecha[0];
                     }
-                    if (fecha[1].length()==1) {
-                      fecha3 = "0"+ fecha[1]; 
-                    }else{
+                    if (fecha[1].length() == 1) {
+                        fecha3 = "0" + fecha[1];
+                    } else {
                         fecha3 = fecha[1];
                     }
                     fecha1 = fecha[2] + "/" + fecha2 + "/" + fecha3;
                     float dinero = Float.parseFloat(r[4]) * 1000 / 3;
                     int id = Integer.parseInt(num);
-                    while(arbol.getRaiz().getNodos()[0]!=null&&arbol.buscarNodo(id)!=null){
+                    while (arbol.getRaiz().getNodos()[0] != null && arbol.buscarNodo(id) != null) {
                         id++;
                     }
                     record.setBorrar('-');
@@ -343,42 +342,39 @@ public class TDA_Archivo {
             Logger.getLogger(TDA_Archivo.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    public void guardarArbol(){
-         try 
-        {
+
+    public void guardarArbol() {
+        try {
             File arbolfile = new File("./arbol.b");
             FileOutputStream ficheroSalida = new FileOutputStream(arbolfile);
             ObjectOutputStream objetoSalida = new ObjectOutputStream(ficheroSalida);
             // se escriben dos objetos de la clase Persona
             objetoSalida.writeObject(this.arbol);
             objetoSalida.close();
-        }
-        catch (FileNotFoundException e) 
-        {
+        } catch (FileNotFoundException e) {
             System.out.println("¡El fichero no existe!");
-        } catch (IOException e) 
-        {
+        } catch (IOException e) {
             e.printStackTrace();
-        } catch (Exception e) 
-        {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
-    public void cargarArbol(){
+
+    public void cargarArbol() {
         try {
             File arbolfile = new File("./arbol.b");
             FileInputStream ficheroEntrada = new FileInputStream(arbolfile);
             ObjectInputStream objetoEntrada = new ObjectInputStream(ficheroEntrada);
             // se leen dos objetos de la clase Persona
-            arbol = (ArbolB)objetoEntrada.readObject();
+            arbol = (ArbolB) objetoEntrada.readObject();
             // se cierra el flujo de objetos objetoEntrada
             objetoEntrada.close();
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
-            } catch (Exception e) {
-                e.printStackTrace();
-            };
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        };
     }
 }

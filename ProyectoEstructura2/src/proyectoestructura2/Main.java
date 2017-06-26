@@ -661,7 +661,10 @@ public class Main extends javax.swing.JFrame {
         int id = Integer.parseInt(JFT_IDModificar.getText());
         if (archivo.getArbol().getRaiz().getNodos()[0] != null && archivo.Buscar(id) != null) {
             Persona buscada = archivo.Buscar(id);
-            JT_NombreModificar.setText(buscada.getNombre());
+            String nom1, nom2;
+            String[] nombre1 = buscada.getNombre().split("[ ]");
+            String nombre = nombre1[0] + " " + nombre1[1];
+            JT_NombreModificar.setText(nombre);
             JFT_NacimientoModificar.setText(buscada.getFechaNacimiento());
             JFT_salarioModificar.setText(Float.toString(buscada.getSalario()));
             JT_NombreModificar.setEnabled(true);
@@ -739,7 +742,7 @@ public class Main extends javax.swing.JFrame {
         if (jTabbedPane1.getSelectedIndex() == 4) {
             JFT_IDBorrar.setText("");
         }
-        
+
 
     }//GEN-LAST:event_jTabbedPane1StateChanged
 

@@ -11,7 +11,7 @@ import java.io.Serializable;
  *
  * @author luigy
  */
-public class Pagina implements Serializable{
+public class Pagina implements Serializable {
 
     private Nodo[] nodos;
     private Pagina padre;

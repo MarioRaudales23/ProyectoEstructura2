@@ -11,14 +11,15 @@ import java.io.Serializable;
  *
  * @author luigy
  */
-public class Nodo implements Serializable{
+public class Nodo implements Serializable {
+
     private long key;
     private int pos;
     private Pagina izq;
     private Pagina der;
 
     public Nodo() {
-       
+
     }
 
     public Nodo(long key, int pos, Pagina izq, Pagina der) {
@@ -27,6 +28,7 @@ public class Nodo implements Serializable{
         this.izq = izq;
         this.der = der;
     }
+
     public Nodo(long key, int pos) {
         this.key = key;
         this.pos = pos;
@@ -42,7 +44,6 @@ public class Nodo implements Serializable{
         this.key = key;
     }
 
-   
     public int getPos() {
         return pos;
     }
@@ -66,13 +67,13 @@ public class Nodo implements Serializable{
     public void setDer(Pagina der) {
         this.der = der;
     }
-    public boolean tieneHijos(){
-        if (der==null&&izq==null) {
+
+    public boolean tieneHijos() {
+        if (der == null && izq == null) {
             return false;
-        }else{
+        } else {
             return true;
         }
     }
-    
-    
+
 }
