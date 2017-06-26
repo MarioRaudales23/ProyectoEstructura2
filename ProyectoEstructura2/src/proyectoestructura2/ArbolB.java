@@ -42,13 +42,13 @@ public class ArbolB {
     public void listar() {
         Pagina temporal;
         ArrayList<Nodo> salida = new ArrayList();
-        obtenerNodoListar(salida,recorrerListar(new Nodo(0, 0), raiz, false),0,new Nodo());
-        
+        obtenerNodoListar(salida, recorrerListar(new Nodo(0, 0), raiz, false), 0, new Nodo());
+
     }
 
-    public void obtenerNodoListar(ArrayList<Nodo> salida, Pagina pag, int actual,Nodo anterior) {
+    public void obtenerNodoListar(ArrayList<Nodo> salida, Pagina pag, int actual, Nodo anterior) {
         for (Nodo nodo : salida) {
-            System.out.print(nodo.getKey()+",");
+            System.out.print(nodo.getKey() + ",");
         }
         if (!true) {
 
@@ -61,32 +61,32 @@ public class ArbolB {
                         break;
                     }
                 }
-                do {System.out.println(pag);
-                    if (pag.getNodos()[actual]!=null) {
-                        if (pag.getNodos()[actual].getKey()==anterior.getKey()) {
-                            obtenerNodoListar(salida, pag, actual,anterior);
-                        }else{
-                           pag=pag.getPadre(); 
+                do {
+                    System.out.println(pag);
+                    if (pag.getNodos()[actual] != null) {
+                        if (pag.getNodos()[actual].getKey() == anterior.getKey()) {
+                            obtenerNodoListar(salida, pag, actual, anterior);
+                        } else {
+                            pag = pag.getPadre();
                         }
-                    }else{
-                        pag=pag.getPadre();
+                    } else {
+                        pag = pag.getPadre();
                     }
                 } while (true);
-                
-                
+
             } else {
-                if (pag.getNodos()[actual]!=null) {
+                if (pag.getNodos()[actual] != null) {
                     salida.add(pag.getNodos()[actual]);
-                    obtenerNodoListar(salida, recorrerListar(new Nodo((pag.getNodos()[actual].getKey()+1),0),pag,false),actual+1,pag.getNodos()[actual]);
-                }else{
-                    obtenerNodoListar(salida,pag.getPadre().getPadre(),0,anterior);
+                    obtenerNodoListar(salida, recorrerListar(new Nodo((pag.getNodos()[actual].getKey() + 1), 0), pag, false), actual + 1, pag.getNodos()[actual]);
+                } else {
+                    obtenerNodoListar(salida, pag.getPadre().getPadre(), 0, anterior);
                 }
             }
         }
     }
 
     public Nodo buscarNodo(int key) {
-        return recorrerBusqueda(new Nodo(key, 0), raiz, false);
+        return recorrerBusqueda(new Nodo(key, -1), raiz, false);
     }
 
     public void recorrerInsertar(Nodo nuevo, Pagina pag, boolean bandera) {
@@ -203,6 +203,10 @@ public class ArbolB {
                     break;
                 }
             }
+        }
+        if (!pag.getNodos()[0].tieneHijos() && buscar.getPos() == -1) {
+            encontrado = true;
+            buscar = null;
         }
         if (!encontrado) {
             buscar = recorrerBusqueda(buscar, siguienteHoja(buscar, pag), encontrado);

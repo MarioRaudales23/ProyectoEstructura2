@@ -9,6 +9,7 @@ import java.awt.Image;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -82,12 +83,23 @@ public class Main extends javax.swing.JFrame {
         JFT_IDBorrar = new javax.swing.JFormattedTextField();
         jb_borrar = new javax.swing.JButton();
         jLabel20 = new javax.swing.JLabel();
+        jLabel22 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jTabbedPane1.setBackground(new java.awt.Color(26, 89, 115));
         jTabbedPane1.setForeground(new java.awt.Color(255, 155, 0));
         jTabbedPane1.setTabPlacement(javax.swing.JTabbedPane.LEFT);
+        jTabbedPane1.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                jTabbedPane1StateChanged(evt);
+            }
+        });
+        jTabbedPane1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jTabbedPane1MouseClicked(evt);
+            }
+        });
 
         jPanel1.setBackground(new java.awt.Color(26, 89, 115));
 
@@ -105,7 +117,11 @@ public class Main extends javax.swing.JFrame {
         jLabel5.setFont(new java.awt.Font("Ubuntu", 0, 24)); // NOI18N
         jLabel5.setText("ID");
 
-        JFT_Nacimiento.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.DateFormatter(new java.text.SimpleDateFormat("yyyy/MM/dd"))));
+        try {
+            JFT_Nacimiento.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("####/##/##")));
+        } catch (java.text.ParseException ex) {
+            ex.printStackTrace();
+        }
 
         JT_Nombre.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -120,14 +136,10 @@ public class Main extends javax.swing.JFrame {
             }
         });
 
-        try {
-            JFT_ID.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("###-####")));
-        } catch (java.text.ParseException ex) {
-            ex.printStackTrace();
-        }
+        JFT_ID.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(java.text.NumberFormat.getIntegerInstance())));
 
-        jb_agregar.setBackground(new java.awt.Color(36, 113, 153));
-        jb_agregar.setForeground(new java.awt.Color(99, 143, 201));
+        jb_agregar.setBackground(new java.awt.Color(2, 245, 233));
+        jb_agregar.setForeground(new java.awt.Color(254, 254, 254));
         jb_agregar.setText("Agregar");
         jb_agregar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -160,7 +172,7 @@ public class Main extends javax.swing.JFrame {
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(JFT_Nacimiento)
                                     .addComponent(JFT_salario, javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(JFT_ID, javax.swing.GroupLayout.DEFAULT_SIZE, 122, Short.MAX_VALUE)
+                                    .addComponent(JFT_ID, javax.swing.GroupLayout.DEFAULT_SIZE, 254, Short.MAX_VALUE)
                                     .addComponent(JT_Nombre, javax.swing.GroupLayout.Alignment.TRAILING)))
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addComponent(jb_agregar, javax.swing.GroupLayout.PREFERRED_SIZE, 205, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -174,7 +186,7 @@ public class Main extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 60, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 49, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -223,8 +235,18 @@ public class Main extends javax.swing.JFrame {
         jScrollPane1.setViewportView(jt_listar);
 
         jb_paginaatras.setText("Pagina Atras");
+        jb_paginaatras.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jb_paginaatrasActionPerformed(evt);
+            }
+        });
 
         jb_paginaadelante.setText("Pagina Adelante");
+        jb_paginaadelante.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jb_paginaadelanteActionPerformed(evt);
+            }
+        });
 
         jLabel21.setFont(new java.awt.Font("Ubuntu", 1, 36)); // NOI18N
         jLabel21.setText("Listar");
@@ -234,34 +256,34 @@ public class Main extends javax.swing.JFrame {
         jPanel7Layout.setHorizontalGroup(
             jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel7Layout.createSequentialGroup()
-                .addContainerGap()
+                .addGap(46, 46, 46)
                 .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel21)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 647, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(jPanel7Layout.createSequentialGroup()
                         .addComponent(jb_paginaatras)
-                        .addGap(92, 92, 92)
-                        .addComponent(jb_paginaadelante))
-                    .addComponent(jLabel21))
-                .addContainerGap(21, Short.MAX_VALUE))
+                        .addGap(138, 138, 138)
+                        .addComponent(jb_paginaadelante)))
+                .addContainerGap(119, Short.MAX_VALUE))
         );
         jPanel7Layout.setVerticalGroup(
             jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel7Layout.createSequentialGroup()
                 .addComponent(jLabel21)
-                .addGap(18, 18, 18)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
                 .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jb_paginaatras)
                     .addComponent(jb_paginaadelante))
-                .addContainerGap(23, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("Listar", jPanel7);
 
         jPanel3.setBackground(new java.awt.Color(26, 89, 115));
 
-        jLabel7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/Agregar.png"))); // NOI18N
+        jLabel7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/buscar.png"))); // NOI18N
 
         jLabel8.setFont(new java.awt.Font("Ubuntu", 0, 24)); // NOI18N
         jLabel8.setText("Nombre");
@@ -272,7 +294,11 @@ public class Main extends javax.swing.JFrame {
         jLabel10.setFont(new java.awt.Font("Ubuntu", 0, 24)); // NOI18N
         jLabel10.setText("Salario");
 
-        JFT_NacimientoBuscar.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.DateFormatter(new java.text.SimpleDateFormat("yyyy/MM/dd"))));
+        try {
+            JFT_NacimientoBuscar.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("####/##/##")));
+        } catch (java.text.ParseException ex) {
+            ex.printStackTrace();
+        }
         JFT_NacimientoBuscar.setEnabled(false);
 
         JT_NombreBuscar.setEnabled(false);
@@ -290,11 +316,7 @@ public class Main extends javax.swing.JFrame {
             }
         });
 
-        try {
-            JFT_IDBuscar.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("###-####")));
-        } catch (java.text.ParseException ex) {
-            ex.printStackTrace();
-        }
+        JFT_IDBuscar.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(java.text.NumberFormat.getIntegerInstance())));
 
         jLabel11.setFont(new java.awt.Font("Ubuntu", 0, 24)); // NOI18N
         jLabel11.setText("ID");
@@ -326,7 +348,7 @@ public class Main extends javax.swing.JFrame {
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(JFT_NacimientoBuscar)
                     .addComponent(JFT_salarioBuscar, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(JFT_IDBuscar, javax.swing.GroupLayout.DEFAULT_SIZE, 122, Short.MAX_VALUE)
+                    .addComponent(JFT_IDBuscar, javax.swing.GroupLayout.DEFAULT_SIZE, 204, Short.MAX_VALUE)
                     .addComponent(JT_NombreBuscar, javax.swing.GroupLayout.Alignment.TRAILING))
                 .addGap(38, 38, 38)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -359,14 +381,14 @@ public class Main extends javax.swing.JFrame {
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(JFT_salarioBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel10))
-                .addContainerGap(182, Short.MAX_VALUE))
+                .addContainerGap(171, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("Buscar", jPanel3);
 
         jPanel4.setBackground(new java.awt.Color(26, 89, 115));
 
-        jLabel13.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/Agregar.png"))); // NOI18N
+        jLabel13.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/modificar-300px.png"))); // NOI18N
 
         jLabel14.setFont(new java.awt.Font("Ubuntu", 0, 24)); // NOI18N
         jLabel14.setText("Nombre");
@@ -380,7 +402,11 @@ public class Main extends javax.swing.JFrame {
         jLabel17.setFont(new java.awt.Font("Ubuntu", 0, 24)); // NOI18N
         jLabel17.setText("ID");
 
-        JFT_NacimientoModificar.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.DateFormatter(new java.text.SimpleDateFormat(""))));
+        try {
+            JFT_NacimientoModificar.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("####/##/##")));
+        } catch (java.text.ParseException ex) {
+            ex.printStackTrace();
+        }
         JFT_NacimientoModificar.setEnabled(false);
 
         JT_NombreModificar.setEnabled(false);
@@ -398,11 +424,7 @@ public class Main extends javax.swing.JFrame {
             }
         });
 
-        try {
-            JFT_IDModificar.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("###-####")));
-        } catch (java.text.ParseException ex) {
-            ex.printStackTrace();
-        }
+        JFT_IDModificar.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(java.text.NumberFormat.getIntegerInstance())));
 
         jb_modificar.setText("Modificar");
         jb_modificar.setEnabled(false);
@@ -441,7 +463,7 @@ public class Main extends javax.swing.JFrame {
                                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(JFT_NacimientoModificar)
                                     .addComponent(JFT_salarioModificar, javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(JFT_IDModificar, javax.swing.GroupLayout.DEFAULT_SIZE, 122, Short.MAX_VALUE)
+                                    .addComponent(JFT_IDModificar, javax.swing.GroupLayout.DEFAULT_SIZE, 204, Short.MAX_VALUE)
                                     .addComponent(JT_NombreModificar, javax.swing.GroupLayout.Alignment.TRAILING)))
                             .addGroup(jPanel4Layout.createSequentialGroup()
                                 .addComponent(jb_modificar, javax.swing.GroupLayout.PREFERRED_SIZE, 194, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -464,7 +486,7 @@ public class Main extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel18, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 69, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 58, Short.MAX_VALUE)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
                         .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -497,11 +519,7 @@ public class Main extends javax.swing.JFrame {
         jLabel19.setFont(new java.awt.Font("Ubuntu", 0, 24)); // NOI18N
         jLabel19.setText("ID");
 
-        try {
-            JFT_IDBorrar.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("###-####")));
-        } catch (java.text.ParseException ex) {
-            ex.printStackTrace();
-        }
+        JFT_IDBorrar.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(java.text.NumberFormat.getIntegerInstance())));
 
         jb_borrar.setFont(new java.awt.Font("Ubuntu", 1, 24)); // NOI18N
         jb_borrar.setText("Borrar");
@@ -514,6 +532,8 @@ public class Main extends javax.swing.JFrame {
         jLabel20.setFont(new java.awt.Font("Ubuntu", 1, 36)); // NOI18N
         jLabel20.setText("Borrar");
 
+        jLabel22.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/b.gif"))); // NOI18N
+
         javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
         jPanel5.setLayout(jPanel5Layout);
         jPanel5Layout.setHorizontalGroup(
@@ -525,13 +545,17 @@ public class Main extends javax.swing.JFrame {
                         .addComponent(jLabel20)
                         .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(jPanel5Layout.createSequentialGroup()
-                        .addComponent(jb_borrar, javax.swing.GroupLayout.PREFERRED_SIZE, 230, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(jPanel5Layout.createSequentialGroup()
                         .addComponent(jLabel19)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(JFT_IDBorrar, javax.swing.GroupLayout.DEFAULT_SIZE, 328, Short.MAX_VALUE)
-                        .addGap(278, 278, 278))))
+                        .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel5Layout.createSequentialGroup()
+                                .addComponent(jb_borrar, javax.swing.GroupLayout.PREFERRED_SIZE, 230, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(126, 126, 126)
+                                .addComponent(jLabel22)
+                                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addGroup(jPanel5Layout.createSequentialGroup()
+                                .addComponent(JFT_IDBorrar)
+                                .addGap(278, 278, 278))))))
         );
         jPanel5Layout.setVerticalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -543,8 +567,10 @@ public class Main extends javax.swing.JFrame {
                     .addComponent(jLabel19)
                     .addComponent(JFT_IDBorrar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
-                .addComponent(jb_borrar, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(264, Short.MAX_VALUE))
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jb_borrar, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel22))
+                .addContainerGap(44, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("Borrar", jPanel5);
@@ -580,8 +606,8 @@ public class Main extends javax.swing.JFrame {
     }//GEN-LAST:event_JFT_salarioBuscarActionPerformed
 
     private void jb_BuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jb_BuscarActionPerformed
-        int id = Integer.parseInt(JFT_IDBorrar.getText());
-        if (archivo.Buscar(id)!= null) {
+        int id = Integer.parseInt(JFT_IDBuscar.getText());
+        if (archivo.Buscar(id) != null) {
             Persona buscada = archivo.Buscar(id);
             JT_NombreBuscar.setText(buscada.getNombre());
             JFT_NacimientoBuscar.setText(buscada.getFechaNacimiento());
@@ -604,34 +630,70 @@ public class Main extends javax.swing.JFrame {
         float salario = Float.parseFloat(JFT_salario.getText());
         if (nombre.length() > 40) {
             JOptionPane.showMessageDialog(this, "El nombre es demasiado largo");
-        } else if (archivo.Buscar(id) != null) {
-            JOptionPane.showMessageDialog(this, "La persona ya existe");
         } else {
-            Persona neo = new Persona(id, nombre, Fecha, salario);
-            if (archivo.Insertar(neo)) {
-                JOptionPane.showMessageDialog(this, "Se agrego con exito");
-            }else{
-                JOptionPane.showMessageDialog(this, "Hubo un error");
+            if (archivo.getArbol().getRaiz().getNodos()[0] == null) {
+                while (nombre.length() != 40) {
+                    nombre += " ";
+                }
+                Persona neo = new Persona(id, nombre, Fecha, salario);
+                if (archivo.Insertar(neo)) {
+                    JOptionPane.showMessageDialog(this, "Se agrego con exito");
+                } else {
+                    JOptionPane.showMessageDialog(this, "Hubo un error");
+                }
+            } else {
+                if (archivo.Buscar(id) != null) {
+                    JOptionPane.showMessageDialog(this, "La persona ya existe");
+                } else {
+                    while (nombre.length() != 40) {
+                        nombre += " ";
+                    }
+                    Persona neo = new Persona(id, nombre, Fecha, salario);
+                    if (archivo.Insertar(neo)) {
+                        JOptionPane.showMessageDialog(this, "Se agrego con exito");
+                    } else {
+                        JOptionPane.showMessageDialog(this, "Hubo un error");
+                    }
+                }
             }
         }
     }//GEN-LAST:event_jb_agregarActionPerformed
 
     private void jb_ModiBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jb_ModiBuscarActionPerformed
         int id = Integer.parseInt(JFT_IDModificar.getText());
-        if (archivo.Buscar(id)!= null) {
+        if (archivo.getArbol().getRaiz().getNodos()[0] != null && archivo.Buscar(id) != null) {
             Persona buscada = archivo.Buscar(id);
             JT_NombreModificar.setText(buscada.getNombre());
             JFT_NacimientoModificar.setText(buscada.getFechaNacimiento());
             JFT_salarioModificar.setText(Float.toString(buscada.getSalario()));
-            JT_Nombre.setEnabled(true);
+            JT_NombreModificar.setEnabled(true);
             JFT_NacimientoModificar.setEnabled(true);
             JFT_salarioModificar.setEnabled(true);
             jb_modificar.setEnabled(true);
+            keymodificar = id;
+        } else {
+            JOptionPane.showMessageDialog(this, "La persona no existe");
         }
     }//GEN-LAST:event_jb_ModiBuscarActionPerformed
 
     private void jb_modificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jb_modificarActionPerformed
-        // TODO add your handling code here:
+        String nombre = JT_NombreModificar.getText();
+        int id = Integer.parseInt(JFT_IDModificar.getText());
+        String Fecha = JFT_NacimientoModificar.getText();
+        float salario = Float.parseFloat(JFT_salarioModificar.getText());
+        if (nombre.length() > 40) {
+            JOptionPane.showMessageDialog(this, "El nombre es demasiado largo");
+        } else {
+            while (nombre.length() != 40) {
+                nombre += " ";
+            }
+            Persona neo = new Persona(id, nombre, Fecha, salario);
+            if (archivo.Modificar(neo, keymodificar)) {
+                JOptionPane.showMessageDialog(this, "Se agrego con exito");
+            } else {
+                JOptionPane.showMessageDialog(this, "Hubo un error");
+            }
+        }
     }//GEN-LAST:event_jb_modificarActionPerformed
 
     private void jb_borrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jb_borrarActionPerformed
@@ -639,11 +701,44 @@ public class Main extends javax.swing.JFrame {
         if (archivo.Buscar(id) != null) {
             if (archivo.Borrar(id)) {
                 JOptionPane.showMessageDialog(this, "Registro borrado con exito");
-            }else{
+            } else {
                 JOptionPane.showMessageDialog(this, "No se logro borrar");
             }
         }
     }//GEN-LAST:event_jb_borrarActionPerformed
+
+    private void jTabbedPane1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTabbedPane1MouseClicked
+
+    }//GEN-LAST:event_jTabbedPane1MouseClicked
+
+    private void jTabbedPane1StateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_jTabbedPane1StateChanged
+        if (jTabbedPane1.getSelectedIndex() == 1) {
+            archivo.listar((DefaultTableModel) this.jt_listar.getModel(), 0);
+            actual = 0;
+        }
+
+    }//GEN-LAST:event_jTabbedPane1StateChanged
+
+    private void jb_paginaadelanteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jb_paginaadelanteActionPerformed
+        archivo.listar((DefaultTableModel) this.jt_listar.getModel(), siguiente);
+        anterior = actual;
+        actual = siguiente;
+        siguiente = actual + 1;
+    }//GEN-LAST:event_jb_paginaadelanteActionPerformed
+
+    private void jb_paginaatrasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jb_paginaatrasActionPerformed
+        if (anterior > 0) {
+            archivo.listar((DefaultTableModel) this.jt_listar.getModel(), anterior);
+            actual = anterior;
+            anterior = actual - 1;
+            siguiente = actual + 1;
+        } else if (anterior == 0) {
+            archivo.listar((DefaultTableModel) this.jt_listar.getModel(), 0);
+            actual = 0;
+            anterior = 0;
+            siguiente = 1;
+        }
+    }//GEN-LAST:event_jb_paginaatrasActionPerformed
 
     /**
      * @param args the command line arguments
@@ -708,6 +803,7 @@ public class Main extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel20;
     private javax.swing.JLabel jLabel21;
+    private javax.swing.JLabel jLabel22;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
@@ -732,4 +828,8 @@ public class Main extends javax.swing.JFrame {
     private javax.swing.JTable jt_listar;
     // End of variables declaration//GEN-END:variables
     TDA_Archivo archivo;
+    int keymodificar;
+    int actual;
+    int anterior;
+    int siguiente;
 }

@@ -16,7 +16,7 @@ public class Pagina {
 
     public Pagina() {
         nodos = new Nodo[4];
-        
+
     }
 
     public Pagina(Nodo[] nodos, Pagina padre) {
@@ -60,7 +60,7 @@ public class Pagina {
     }
 
     public boolean overflow() {
-        if (nodos[nodos.length-1]==null) {
+        if (nodos[nodos.length - 1] == null) {
             return false;
         } else {
             return true;
@@ -69,15 +69,14 @@ public class Pagina {
 
     public void ordenar() {
         Nodo temp;
-        for (int i = 0; i < nodos.length ; i++) {
-            for (int j = 0; j < nodos.length ; j++) {
-                if (nodos[i]==null) {
-                    i=nodos.length-1;
+        for (int i = 0; i < nodos.length; i++) {
+            for (int j = 0; j < nodos.length; j++) {
+                if (nodos[i] == null) {
+                    i = nodos.length - 1;
                 } else {
-                    if (nodos[j]==null) {
+                    if (nodos[j] == null) {
                         break;
-                    }else
-                    if ((nodos[i].getKey()) < (nodos[j].getKey())) {
+                    } else if ((nodos[i].getKey()) < (nodos[j].getKey())) {
                         temp = nodos[i];
                         nodos[i] = nodos[j];
                         nodos[j] = temp;
@@ -86,15 +85,16 @@ public class Pagina {
             }
         }
     }
+
     public void ordenarSplit() {
         Nodo temp;
         for (int i = 0; i < nodos.length; i++) {
             for (int j = 0; j < nodos.length; j++) {
-                    if ((nodos[i].getKey()) < (nodos[j].getKey())) {
-                        temp = nodos[i];
-                        nodos[i] = nodos[j];
-                        nodos[j] = temp;
-                    }
+                if ((nodos[i].getKey()) < (nodos[j].getKey())) {
+                    temp = nodos[i];
+                    nodos[i] = nodos[j];
+                    nodos[j] = temp;
+                }
             }
         }
     }
@@ -103,10 +103,11 @@ public class Pagina {
     public String toString() {
         String hijos = "";
         for (int i = 0; i < nodos.length; i++) {
-            if (nodos[i]==null) {
+            if (nodos[i] == null) {
                 break;
-            }else
-            hijos += "[" + nodos[i].getKey() + "]";
+            } else {
+                hijos += "[" + nodos[i].getKey() + "]";
+            }
         }
         return hijos;
     }

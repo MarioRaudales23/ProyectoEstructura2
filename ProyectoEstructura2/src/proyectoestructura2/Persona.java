@@ -10,6 +10,7 @@ package proyectoestructura2;
  * @author mario
  */
 public class Persona {
+
     private int id;
     private String nombre;
     private String FechaNacimiento;
@@ -83,9 +84,9 @@ public class Persona {
     public void setNext(int next) {
         this.next = next;
     }
-    
-    public int sizeofRecord(){
+
+    public int sizeofRecord() {
         return 68;
     }
-    
+
 }
