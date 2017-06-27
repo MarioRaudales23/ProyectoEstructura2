@@ -610,6 +610,9 @@ public class Main extends javax.swing.JFrame {
             JT_NombreBuscar.setText(buscada.getNombre());
             JFT_NacimientoBuscar.setText(buscada.getFechaNacimiento());
             JFT_salarioBuscar.setText(Float.toString(buscada.getSalario()));
+            JT_NombreBuscar.setEnabled(true);
+            JFT_NacimientoBuscar.setEnabled(true);
+            JFT_salarioBuscar.setEnabled(true);
         }
     }//GEN-LAST:event_jb_BuscarActionPerformed
 
@@ -663,7 +666,12 @@ public class Main extends javax.swing.JFrame {
             Persona buscada = archivo.Buscar(id);
             String nom1, nom2;
             String[] nombre1 = buscada.getNombre().split("[ ]");
-            String nombre = nombre1[0] + " " + nombre1[1];
+            String nombre;
+            if (nombre1.length == 1) {
+                nombre = nombre1[0];
+            } else {
+                nombre = nombre1[0] + " " + nombre1[1];
+            }
             JT_NombreModificar.setText(nombre);
             JFT_NacimientoModificar.setText(buscada.getFechaNacimiento());
             JFT_salarioModificar.setText(Float.toString(buscada.getSalario()));
@@ -690,7 +698,7 @@ public class Main extends javax.swing.JFrame {
             }
             Persona neo = new Persona(id, nombre, Fecha, salario);
             if (archivo.Modificar(neo, keymodificar)) {
-                JOptionPane.showMessageDialog(this, "Se agrego con exito");
+                JOptionPane.showMessageDialog(this, "Se m3odifico con exito");
             } else {
                 JOptionPane.showMessageDialog(this, "Hubo un error");
             }
@@ -728,6 +736,9 @@ public class Main extends javax.swing.JFrame {
             JT_NombreBuscar.setText("");
             JFT_NacimientoBuscar.setText("");
             JFT_salarioBuscar.setText("");
+            JT_NombreBuscar.setEnabled(false);
+            JFT_NacimientoBuscar.setEnabled(false);
+            JFT_salarioBuscar.setEnabled(false);
         }
         if (jTabbedPane1.getSelectedIndex() == 3) {
             JFT_IDModificar.setText("");

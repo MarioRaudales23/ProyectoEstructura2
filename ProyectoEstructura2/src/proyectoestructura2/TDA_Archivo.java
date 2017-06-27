@@ -51,12 +51,11 @@ public class TDA_Archivo {
                     if (availist.getHeader() != -1) {
                         availist.AddAvail(actual);
                         Persona lectura = new Persona();
-                        //ManejoArchivo.seek(0 + availist.headerSize());
+                        ManejoArchivo.seek(0 + availist.headerSize());
                         while (true) {
                             ManejoArchivo.seek((actual - 1) * lectura.sizeofRecord() + availist.headerSize());
                             ManejoArchivo.readChar();
                             actual = ManejoArchivo.readInt();
-                            System.out.println(actual);
                             if (actual != -1) {
                                 availist.AddAvail(actual);
                             } else {
@@ -80,8 +79,8 @@ public class TDA_Archivo {
 
     public boolean Insertar(Persona record) {
         try {
-            ManejoArchivo.seek(0 + availist.headerSize());
-            if (availist.getAvailist().size() == 0) {
+            ManejoArchivo.seek(0 + availist.headerSize());//Se mueve al inicio del inicio del archivo
+            if (availist.getAvailist().size() == 0) {//Si no hay nada el el availist se agrega al final
                 ManejoArchivo.seek(archivo.length());
                 ManejoArchivo.writeChar(record.getBorrar());
                 ManejoArchivo.writeInt(-1);
@@ -89,20 +88,21 @@ public class TDA_Archivo {
                 ManejoArchivo.writeUTF(record.getNombre());
                 ManejoArchivo.writeUTF(record.getFechaNacimiento());
                 ManejoArchivo.writeFloat(record.getSalario());
-                int temprrn = (int) ((archivo.length() - availist.getHeaderSize()) / record.sizeofRecord());
+                int temprrn = (int) ((archivo.length() - availist.getHeaderSize()) / record.sizeofRecord());//se obtiene el rrn
                 Nodo neo = new Nodo(record.getId(), temprrn);
-                arbol.insertar(neo);
+                arbol.insertar(neo);//Se guarda en el arbol
                 return true;
             } else {
-                ManejoArchivo.seek(0);
-                int rrnAvail = availist.getSiguiente();
-                ManejoArchivo.seek(record.sizeofRecord() * (rrnAvail - 1) + availist.getHeaderSize());
+                ManejoArchivo.seek(0);//Se mueve al header 
+                int rrnAvail = availist.getSiguiente();//obtiene el rrn del availist
+                ManejoArchivo.seek(record.sizeofRecord() * (rrnAvail - 1) + availist.getHeaderSize());//Se mueve a la ubicacion
                 char prueba = ManejoArchivo.readChar();
                 if (prueba == '*') {
                     int newheader = ManejoArchivo.readInt();
                     ManejoArchivo.seek(0);
                     ManejoArchivo.writeInt(newheader);
                 }
+                //Se agrega el registro en el rrn obtenido del availist
                 ManejoArchivo.seek(record.sizeofRecord() * (rrnAvail - 1) + availist.getHeaderSize());
                 ManejoArchivo.writeChar(record.getBorrar());
                 ManejoArchivo.writeInt(-1);
@@ -111,7 +111,7 @@ public class TDA_Archivo {
                 ManejoArchivo.writeUTF(record.getFechaNacimiento());
                 ManejoArchivo.writeFloat(record.getSalario());
                 Nodo neo = new Nodo(record.getId(), rrnAvail);
-                arbol.insertar(neo);
+                arbol.insertar(neo);//Se agrega al arbol el indice
                 return true;
             }
         } catch (Exception e) {
@@ -124,6 +124,7 @@ public class TDA_Archivo {
         Persona record = new Persona();
         if (arbol.buscarNodo(key) != null) {
             try {
+                //Se obtiene el rrn del registro de su ubicacion en el archivo
                 int rrn = arbol.buscarNodo(key).getPos();
                 ManejoArchivo.seek(record.sizeofRecord() * (rrn - 1) + availist.getHeaderSize());
                 record.setBorrar(ManejoArchivo.readChar());
@@ -132,10 +133,12 @@ public class TDA_Archivo {
                 record.setNombre(ManejoArchivo.readUTF());
                 record.setFechaNacimiento(ManejoArchivo.readUTF());
                 record.setSalario(ManejoArchivo.readFloat());
+                //Verifica si el registro ya fue borrado como una verificacion secundaria
                 if (record.getBorrar() != '*') {
                     record.setBorrar('*');
                     ManejoArchivo.seek(0);
                     int header = ManejoArchivo.readInt();
+                    //Si no hay nada en el header actualiza directamente el header 
                     if (header == -1) {
                         ManejoArchivo.seek(0);
                         ManejoArchivo.writeInt(rrn);
@@ -147,8 +150,10 @@ public class TDA_Archivo {
                         ManejoArchivo.writeUTF(record.getFechaNacimiento());
                         ManejoArchivo.writeFloat(record.getSalario());
                         availist.AddAvail(rrn);
+                        arbol.Eliminar(key);
                         return true;
                     } else {
+                        //Caso contrario se paza el header al registro borrado y se coloca el en el header el rrn del registro 
                         ManejoArchivo.seek(0);
                         ManejoArchivo.writeInt(rrn);
                         ManejoArchivo.seek(record.sizeofRecord() * (rrn - 1) + availist.getHeaderSize());
@@ -159,6 +164,7 @@ public class TDA_Archivo {
                         ManejoArchivo.writeUTF(record.getFechaNacimiento());
                         ManejoArchivo.writeFloat(record.getSalario());
                         availist.AddAvail(rrn);
+                        arbol.Eliminar(key);
                         return true;
                     }
                 }
@@ -172,14 +178,15 @@ public class TDA_Archivo {
         return false;
     }
 
+    //Este metodo busca por medio de indice un registro en particular
     public Persona Buscar(int key) {
         Persona record = new Persona();
-        if (arbol.buscarNodo(key) != null) {
+        if (arbol.buscarNodo(key) != null) {//se verifica si el registro esta en el arbol
             try {
-                int rrn = arbol.buscarNodo(key).getPos();
+                int rrn = arbol.buscarNodo(key).getPos();//Se obtiene el rrn del registro
                 if (rrn == 0) {
+                    //Se lee el registro de la ubicacion
                     ManejoArchivo.seek(record.sizeofRecord() * (rrn) + availist.getHeaderSize());
-                    System.out.println(rrn);
                     record.setBorrar(ManejoArchivo.readChar());
                     record.setNext(ManejoArchivo.readInt());
                     record.setId(ManejoArchivo.readInt());
@@ -187,6 +194,7 @@ public class TDA_Archivo {
                     record.setFechaNacimiento(ManejoArchivo.readUTF());
                     record.setSalario(ManejoArchivo.readFloat());
                 } else {
+                    //Se lee el registro de la ubicacion
                     ManejoArchivo.seek(record.sizeofRecord() * (rrn - 1) + availist.getHeaderSize());
                     record.setBorrar(ManejoArchivo.readChar());
                     record.setNext(ManejoArchivo.readInt());
@@ -200,18 +208,20 @@ public class TDA_Archivo {
             }
 
         } else {
-            return null;
+            return null;//si no existe retorna null
         }
-        return record;
+        return record;//si existe se retorna el registro
     }
 
     public boolean Modificar(Persona neorecord, int key) {
-        if (arbol.buscarNodo(key) != null) {
+        if (arbol.buscarNodo(key) != null) {//Se verifica que el registro esta en el arbol
             try {
-                Nodo temp = arbol.buscarNodo(key);
+
+                Nodo temp = arbol.buscarNodo(key);//Se guarda el nodo que contiene la informacion del registro
                 int rrn = temp.getPos();
                 ManejoArchivo.seek(neorecord.sizeofRecord() * (rrn - 1) + availist.getHeaderSize());
-                if (temp.getKey() == neorecord.getId()) {
+                if (temp.getKey() == neorecord.getId()) {//Se verifica si se cambio la llave
+                    //Si no se cambio se guarda directamente en su posicion
                     ManejoArchivo.writeChar(neorecord.getBorrar());
                     ManejoArchivo.writeInt(0);
                     ManejoArchivo.writeInt(neorecord.getId());
@@ -219,6 +229,7 @@ public class TDA_Archivo {
                     ManejoArchivo.writeUTF(neorecord.getFechaNacimiento());
                     ManejoArchivo.writeFloat(neorecord.getSalario());
                 } else {
+                    //Caso contrario se hace Borrar-Insertar
                     Borrar(key);
                     Insertar(neorecord);
                 }
@@ -230,44 +241,48 @@ public class TDA_Archivo {
         return true;
     }
 
+    //Metodo que retorna la longitud del archivo sin header
     public long filesize() {
         return archivo.length() - availist.getHeaderSize();
     }
 
+    //Metodo que retorna un TableModel con los registros
     public DefaultTableModel listar(DefaultTableModel model, int rrn) {
         try {
+            //Se reinicia la tabla para que no contenga lineas
             while (model.getRowCount() > 0) {
                 model.removeRow(0);
             }
             Persona record = new Persona();
-            if (record.sizeofRecord() * rrn * 50 + availist.getHeaderSize() < archivo.length()) {
-                ManejoArchivo.seek(0 + availist.getHeaderSize());
-                while (true) {
-                    if (ManejoArchivo.getFilePointer() < archivo.length()) {
-                        record.setBorrar(ManejoArchivo.readChar());
-                        record.setNext(ManejoArchivo.readInt());
-                        record.setId(ManejoArchivo.readInt());
-                        record.setNombre(ManejoArchivo.readUTF());
-                        record.setFechaNacimiento(ManejoArchivo.readUTF());
-                        record.setSalario(ManejoArchivo.readFloat());
-                        if (record.getBorrar() != '*') {
-                            model.addRow(new Object[]{record.getId(), record.getNombre(), record.getFechaNacimiento(), record.getSalario()});
-                        }
-                    } else {
-                        break;
+            ManejoArchivo.seek(0 + availist.getHeaderSize());
+            while (true) {
+                if (ManejoArchivo.getFilePointer() < archivo.length()) {//Se verifica que no sea el final del archivo
+                    //se lee el record y se agrega a la tabla
+                    record.setBorrar(ManejoArchivo.readChar());
+                    record.setNext(ManejoArchivo.readInt());
+                    record.setId(ManejoArchivo.readInt());
+                    record.setNombre(ManejoArchivo.readUTF());
+                    record.setFechaNacimiento(ManejoArchivo.readUTF());
+                    record.setSalario(ManejoArchivo.readFloat());
+                    if (record.getBorrar() != '*') {
+                        model.addRow(new Object[]{record.getId(), record.getNombre(), record.getFechaNacimiento(), record.getSalario()});
                     }
+                } else {//Al final del archivo se sale del ciclo
+                    break;
                 }
+
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return model;
+        return model;//Retorna el modelo
     }
 
     public ArbolB getArbol() {
         return arbol;
     }
 
+    //Metodo que carga el archivo txt a binario
     public void cargar() {
         try {
             ManejoArchivo.seek(0 + availist.getHeaderSize());
@@ -275,17 +290,17 @@ public class TDA_Archivo {
             FileReader fr = null;
             BufferedReader br = null;
             try {
-                // Apertura del fichero y creacion de BufferedReader para poder
-                // hacer una lectura comoda (disponer del metodo readLine()).
+                //Se abre el archivo txt 
                 archivos = new File("./datos.txt");
                 fr = new FileReader(archivos);
                 br = new BufferedReader(fr);
                 Persona record = new Persona();
-                // Lectura del fichero
                 String linea;
+                //Se abre el archivo binario
                 File data = new File("./Registro.data");
                 RandomAccessFile ManejoArchivo = new RandomAccessFile(data, "rw");
                 ManejoArchivo.writeInt(-1);
+                //Se hace todos los diferentes cambios para que el txt se pase a binario
                 while ((linea = br.readLine()) != null) {
                     String[] r = linea.split("[|]");
                     String[] numero = r[0].split("[-]");
@@ -326,9 +341,6 @@ public class TDA_Archivo {
             } catch (Exception e) {
                 e.printStackTrace();
             } finally {
-                // En el finally cerramos el fichero, para asegurarnos
-                // que se cierra tanto si todo va bien como si salta 
-                // una excepcion.
                 try {
                     if (null != fr) {
                         fr.close();
@@ -343,7 +355,8 @@ public class TDA_Archivo {
         }
     }
 
-    public void guardarArbol() {
+    //Guarda el arbol en binario
+    public boolean guardarArbol() {
         try {
             File arbolfile = new File("./arbol.b");
             FileOutputStream ficheroSalida = new FileOutputStream(arbolfile);
@@ -351,24 +364,27 @@ public class TDA_Archivo {
             // se escriben dos objetos de la clase Persona
             objetoSalida.writeObject(this.arbol);
             objetoSalida.close();
+            return true;
         } catch (FileNotFoundException e) {
-            System.out.println("¡El fichero no existe!");
         } catch (IOException e) {
             e.printStackTrace();
         } catch (Exception e) {
             e.printStackTrace();
         }
+        return false;
     }
 
-    public void cargarArbol() {
+    //Carga el arbol al archivo
+    public boolean cargarArbol() {
         try {
             File arbolfile = new File("./arbol.b");
             FileInputStream ficheroEntrada = new FileInputStream(arbolfile);
             ObjectInputStream objetoEntrada = new ObjectInputStream(ficheroEntrada);
-            // se leen dos objetos de la clase Persona
+            // se lee el arbol
             arbol = (ArbolB) objetoEntrada.readObject();
-            // se cierra el flujo de objetos objetoEntrada
+            // se cierra el flujo
             objetoEntrada.close();
+            return true;
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {
@@ -376,5 +392,6 @@ public class TDA_Archivo {
         } catch (Exception e) {
             e.printStackTrace();
         };
+        return false;
     }
 }

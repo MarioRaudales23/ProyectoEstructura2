@@ -88,6 +88,17 @@ public class Pagina implements Serializable {
         }
     }
 
+    public int poUltimo() {
+        int salida = 0;
+        for (int i = 0; i < nodos.length; i++) {
+            if (nodos[i] == null) {
+                salida = i - 1;
+                break;
+            }
+        }
+        return salida;
+    }
+
     public void ordenarSplit() {
         Nodo temp;
         for (int i = 0; i < nodos.length; i++) {
